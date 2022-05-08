@@ -511,3 +511,552 @@ function stringMatchBis(a,b){
 //console.log(stringMatchBis('aaa*aaa' , 'aaa'));
 
 //==============================================================================
+// https://www.codewars.com/kata/57e921d8b36340f1fd000059/train/javascript
+// Your friend invites you out to a cool floating pontoon around 1km off the beach. Among other things, the pontoon has a huge slide that drops you out right into the ocean, a small way from a set of stairs used to climb out.
+
+// As you plunge out of the slide into the water, you see a shark hovering in the darkness under the pontoon... Crap!
+
+// You need to work out if the shark will get to you before you can get to the pontoon. To make it easier... as you do the mental calculations in the water you either freeze when you realise you are dead, or swim when you realise you can make it!
+
+// You are given 5 variables;
+
+// sharkDistance = distance from the shark to the pontoon. The shark will eat you if it reaches you before you escape to the pontoon.
+
+// sharkSpeed = how fast it can move in metres/second.
+
+// pontoonDistance = how far you need to swim to safety in metres.
+
+// youSpeed = how fast you can swim in metres/second.
+
+// dolphin = a boolean, if true, you can half the swimming speed of the shark as the dolphin will attack it.
+
+// The pontoon, you, and the shark are all aligned in one dimension.
+
+// If you make it, return "Alive!", if not, return "Shark Bait!".
+
+function shark(pontoonDistance, sharkDistance, youSpeed, sharkSpeed, dolphin){
+    let sharkTime=sharkDistance/sharkSpeed
+    let youTime=pontoonDistance/youSpeed
+
+
+    if(dolphin) {
+        sharkTime=sharkTime*2
+        return youTime<sharkTime ? "Alive!" : "Shark Bait!"
+    } else {
+        return youTime<sharkTime ? "Alive!" : "Shark Bait!"
+    }
+}
+
+//console.log(shark(26, 45, 4, 10, true));
+
+//================================================================================
+// https://www.codewars.com/kata/5813d19765d81c592200001a/train/javascript
+// In this kata you get the start number and the end number of a region and should return the count of all numbers except numbers with a 5 in it. The start and the end number are both inclusive!
+
+// Examples:
+
+// 1,9 -> 1,2,3,4,6,7,8,9 -> Result 8
+// 4,17 -> 4,6,7,8,9,10,11,12,13,14,16,17 -> Result 12
+// The result may contain fives. ;-)
+// The start number will always be smaller than the end number. Both numbers can be also negative!
+
+function dontGiveMeFive(start, end) {
+  let arr = []
+  for(let i=start; i<=end; i++) {
+      arr.push(i.toString())
+  }
+  let filtered = arr.filter(el => !el.includes('5'))
+  return filtered.length
+}
+
+function dontGiveMeFiveBis(start, end) {
+    let res = []
+    for(let i=start ; i<=end ; i++) {
+        if(!i.toString().includes('5')) res.push(i)
+    }
+    return res.length
+}
+
+//console.log(dontGiveMeFiveBis(4,17));
+
+//===============================================================================
+// https://www.codewars.com/kata/5aee86c5783bb432cd000018/train/javascript
+// Welcome to the Codewars Bar!
+// Codewars Bar recommends you drink 1 glass of water per standard drink so you're not hungover tomorrow morning.
+
+// Your fellow coders have bought you several drinks tonight in the form of a string. Return a string suggesting how many glasses of water you should drink to not be hungover.
+
+// Examples
+// "1 beer"  -->  "1 glass of water"
+// because you drank one standard drink
+
+// "1 shot, 5 beers, 2 shots, 1 glass of wine, 1 beer"  -->  "10 glasses of water"
+// because you drank ten standard drinks
+// Note:
+
+// To keep the things simple, we'll consider that any "numbered thing" in the string is a drink. Even "1 bear" -> "1 glass of water"; or "1 chainsaw and 2 pools" -> "3 glasses of water"...
+
+function hydrate(s) {
+    let arr = s.split(' ').map(el => parseInt(el, 10)).filter(el => Number.isInteger(el))
+    console.log(arr);
+    let glass = arr.reduce((acc, cur) => acc+cur, 0)
+    if(glass<=1) { return glass + ' glass of water'}
+    else { return glass + ' glasses of water'}
+}
+
+//console.log(hydrate('2 glasses of wine and 1 shot'));
+
+//================================================================================
+// https://www.codewars.com/kata/5797bbb34be9127074000132/train/javascript
+// Multiplication can be thought of as repeated addition. Exponentiation can be thought of as repeated multiplication. Tetration is repeated exponentiation. Just as the 4th power of 3 is 3*3*3*3, the 4th tetration of 3 is 3^3^3^3. By convention, we insert parentheses from right to left, so the 4th tetration of 3 is 3^(3^(3^3))) = 3^(3^27) = 3^7625597484987 = a really big number
+
+// Your Task
+// Complete the function that returns the number that is the yth tetration of x, where x is a positive integer, and y is a non-negative integer. The function should return a number (not a string that picks out the number).
+
+// Note: the convention is that, as with exponentiation, the 0th tetration of any number is always 1
+
+// Examples (inputs -> output)
+// * 4, 0  -->     1  (due to the convention mentioned above)
+// * 7, 1  -->     7  (7^1)
+// * 5, 2  -->  3125  (5^5)
+// * 2, 3  -->    16  (2^(2^2))
+
+function tetration(x,y){
+    if(y===0) return 1
+
+    else {
+        let res = x
+        while(y>1) {
+            res=x**res
+            y--
+        }
+        return res
+    }
+}
+
+function tetrationBis(x, y) {
+    if(y===0) return 1
+    else {
+        return x**tetrationBis(x, y-1)
+    }
+}
+
+//console.log(tetration(5, 2));
+
+//================================================================================
+// https://www.codewars.com/kata/567501aec64b81e252000003/train/javascript
+// John wants to decorate the walls of a room with wallpaper. He wants a fool-proof method for getting it right.
+
+// John knows that the rectangular room has a length of l meters, a width of w meters, a height of h meters. The standard width of the rolls he wants to buy is 52 centimeters. The length of a roll is 10 meters. He bears in mind however, that it’s best to have an extra length of wallpaper handy in case of mistakes or miscalculations so he wants to buy a length 15% greater than the one he needs.
+
+// Last time he did these calculations he got a headache, so could you help John?
+
+// Task
+// Your function wallpaper(l, w, h) should return as a plain English word in lower case the number of rolls he must buy.
+
+// Example:
+// wallpaper(4.0, 3.5, 3.0) should return "ten"
+
+// wallpaper(0.0, 3.5, 3.0) should return "zero"
+
+// Notes:
+// all rolls (even with incomplete width) are put edge to edge
+
+// 0 <= l, w, h (floating numbers); it can happens that w * h * l is zero
+
+// the integer r (number of rolls) will always be less or equal to 20
+
+
+// In Javascript English numbers are preloaded and can be accessed as:
+// numbers = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve","thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]
+
+function wallpaper(l, w, h) {
+    //a rectangular room has a wall surface of 2.l.h + 2.w.h m² (*1.15 for safety)
+    //a roll has a surface of 10*0.52=5.2m²
+    let numbers = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve","thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]
+    let result
+    if(l*w*h===0) result = 0 //a room with no length or no width or no height is not a room
+    else {
+        result = 1.15*(2*l*h + 2*w*h)
+        result=Math.ceil(result/5.2)
+    }
+
+    return numbers[result]
+}
+
+// console.log(wallpaper(6.3, 4.5, 3.29)); //16
+// console.log(wallpaper(6.3, 5.8, 3.13)); //17
+
+//===============================================================================
+// https://www.codewars.com/kata/56f3a1e899b386da78000732/train/javascript
+// Write a function partlist that gives all the ways to divide a list (an array) of at least two elements into two non-empty parts.
+
+// Each two non empty parts will be in a pair (or an array for languages without tuples or a structin C - C: see Examples test Cases - )
+// Each part will be in a string
+// Elements of a pair must be in the same order as in the original array.
+// Examples of returns in different languages:
+// a = ["az", "toto", "picaro", "zone", "kiwi"] -->
+// [["az", "toto picaro zone kiwi"], ["az toto", "picaro zone kiwi"], ["az toto picaro", "zone kiwi"], ["az toto picaro zone", "kiwi"]] 
+
+
+function partlist(arr) {
+    let result=[]
+    for(let i=1 ; i<arr.length ; i++) {
+        result.push([arr.slice(0, i).join(' ') , arr.slice(i).join(' ')])
+    }
+
+    return result
+}
+
+//console.log(partlist(["az", "toto", "picaro", "zone", "kiwi"]));
+
+//=============================================================================
+// https://www.codewars.com/kata/51675d17e0c1bed195000001/train/javascript
+// In the following 6 digit number:
+
+// 283910
+// 91 is the greatest sequence of 2 consecutive digits.
+
+// In the following 10 digit number:
+
+// 1234567890
+// 67890 is the greatest sequence of 5 consecutive digits.
+
+// Complete the solution so that it returns the greatest sequence of five consecutive digits found within the number given. The number will be passed in as a string of only digits. It should return a five digit integer. The number passed may be as large as 1000 digits.
+
+// Adapted from ProjectEuler.net
+
+function greater5Digits(digits){
+  let result = +digits.slice(0,5)
+
+  for(let i=0 ; i<digits.length-4 ; i++) {
+      let temp=digits.slice(i,i+5) //end index is up to but not included
+      if(+temp > result) {
+          result= +temp
+      }
+  }
+  return result
+}
+
+//console.log(greater5Digits('1234567890'));
+
+//================================================================================
+// https://www.codewars.com/kata/596b8a3fc4cb1de46b000001/train/javascript
+// Your company MRE Tech has hired a spiritual consultant who advised on a new Balance policy: Don't take sides, don't favour, stay in the middle. This policy even applies to the software where all strings should now be centered. You are the poor soul to implement it.
+
+// Task
+// Implement a function center that takes a string strng, an integer width, and an optional character fill (default: ' ') and returns a new string of length width where strng is centered and on the right and left padded with fill.
+
+// center(strng, width, fill=' ')
+// If the left and right padding cannot be of equal length make the padding on the left side one character longer.
+
+// If strng is longer than width return strng unchanged.
+
+// Examples
+// center('a', 3)  # returns " a "
+// center('abc', 10, '_')  # returns "____abc___"
+// center('abcdefg', 2)  # returns "abcdefg"
+
+function center (strng, width, fill = ' ') {
+    if(strng.length > width) {
+        return strng;
+    }
+    else {
+        let leftLength = Math.ceil((width-strng.length) / 2)
+        let rightLength = Math.floor((width-strng.length) / 2)
+        // let left = Array(leftLength).fill(fill).join('')
+        // let right = Array(rightLength).fill(fill).join('')
+        let left = fill.repeat(leftLength)
+        let right = fill.repeat(rightLength)
+
+        let result = left+strng+right
+
+        return result
+    }
+}
+
+//console.log(center('a', 3));
+//console.log(center('abc', 10, '_'));
+//console.log(center('abcdefg', 2));
+
+//==============================================================================
+// https://www.codewars.com/kata/594adadee075005308000122/train/javascript
+// Given a number N, can you fabricate the two numbers NE and NO such that NE is formed by even digits of N and NO is formed by odd digits of N? Examples:
+
+// input	NE	NO
+// 126453	264	153
+// 3012	    2	31
+// 4628	    4628    0
+// 0 is considered as an even number.
+
+// In C and JavaScript you should return an array of two elements such as the first is NE and the second is NO.
+
+function evenAndOdd(num){
+    let NE=num.toString().split('').filter(el => el%2===0).join('')
+    let NO=num.toString().split('').filter(el => el%2===1).join('')
+
+    return [+NE, +NO]
+}
+
+//=============================================================================
+// https://www.codewars.com/kata/565b112d09c1adfdd500019c/train/javascript
+// Complete the function that takes an array of words.
+
+// You must concatenate the nth letter from each word to construct a new word which should be returned as a string, where n is the position of the word in the list.
+
+// For example:
+
+// ["yoda", "best", "has"]  -->  "yes"
+//   ^        ^        ^
+//   n=0     n=1     n=2
+// Note: Test cases contain valid input only - i.e. a string array or an empty array; and each word will have enough letters.
+
+function nthChar(words){
+    let res=''
+    for(let i=0 ; i<words.length ; i++) {
+        res+= words[i][i]
+    }
+    return res
+}
+
+function nthCharBis(words) {
+    return words.reduce( (acc, curr, i) => acc+curr[i], '')
+}
+
+//console.log(nthCharBis(["yoda", "best", "has"]));
+
+//================================================================================
+// Definition
+// An element is leader if it is greater than The Sum all the elements to its right side.
+
+// Task
+// Given an array/list [] of integers , Find all the LEADERS in the array.
+
+// Notes
+// Array/list size is at least 3 .
+
+// Array/list's numbers Will be mixture of positives , negatives and zeros
+
+// Repetition of numbers in the array/list could occur.
+
+// Returned Array/list should store the leading numbers in the same order in the original array/list .
+
+// Input >> Output Examples
+// arrayLeaders ({1, 2, 3, 4, 0}) ==> return {4}
+// Explanation:
+// 4 is greater than the sum all the elements to its right side
+
+// Note : The last element 0 is equal to right sum of its elements (abstract zero).
+
+// arrayLeaders ({16, 17, 4, 3, 5, 2}) ==> return {17, 5, 2}
+// Explanation:
+// 17 is greater than the sum all the elements to its right side
+
+// 5 is greater than the sum all the elements to its right side
+
+// Note : The last element 2 is greater than the sum of its right elements (abstract zero).
+
+// arrayLeaders ({5, 2, -1}) ==> return {5, 2}
+// Explanation:
+// 5 is greater than the sum all the elements to its right side
+
+// 2 is greater than the sum all the elements to its right side
+
+// Note : The last element -1 is less than the sum of its right elements (abstract zero).
+
+// arrayLeaders ({0, -1, -29, 3, 2}) ==> return {0, -1, 3, 2}
+// Explanation:
+// 0 is greater than the sum all the elements to its right side
+
+// -1 is greater than the sum all the elements to its right side
+
+// 3 is greater than the sum all the elements to its right side
+
+// Note : The last element 2 is greater than the sum of its right elements (abstract zero).
+
+function arrayLeaders(numbers){
+    let arr = numbers.filter( (elem, idx) => elem > numbers.slice(idx+1).reduce( (ac, cur) => ac+cur, 0))
+
+    //lets break that down : so I need every element that are big enough (filter)
+    //bigger than the sum (reduce) of the right slice
+    //slice(idx) if idx>taille -> empty table
+
+    return arr
+}
+
+//console.log(arrayLeaders([0, -1, -29, 3, 2]));
+
+//===============================================================================
+// https://www.codewars.com/kata/56dbe0e313c2f63be4000b25/train/javascript
+// This kata is the first of a sequence of four about "Squared Strings".
+
+// You are given a string of n lines, each substring being n characters long: For example: (\n seperation)
+
+// s = "abcd\nefgh\nijkl\nmnop"
+
+// We will study some transformations of this square of strings.
+
+// Vertical mirror: vert_mirror (or vertMirror or vert-mirror)
+// vert_mirror(s) => "dcba\nhgfe\nlkji\nponm" //reverse each el
+// Horizontal mirror: hor_mirror (or horMirror or hor-mirror)
+//  hor_mirror(s) => "mnop\nijkl\nefgh\nabcd" //reverse table
+// or printed:
+
+// vertical mirror   |horizontal mirror   
+// abcd --> dcba     |abcd --> mnop 
+// efgh     hgfe     |efgh     ijkl 
+// ijkl     lkji     |ijkl     efgh 
+// mnop     ponm     |mnop     abcd 
+// Task:
+// Write these two functions
+// and
+
+// high-order function oper(fct, s) where
+
+// fct is the function of one variable f to apply to the string s (fct will be one of vertMirror, horMirror)
+
+// Examples:
+// s = "abcd\nefgh\nijkl\nmnop"
+// oper(vert_mirror, s) => "dcba\nhgfe\nlkji\nponm"
+// oper(hor_mirror, s) => "mnop\nijkl\nefgh\nabcd"
+// Note:
+// The form of the parameter fct in oper changes according to the language. You can see each form according to the language in "Sample Tests".
+
+
+function vertMirror(strng) {
+    //I should basically reverse each el (substring seperated by \n) of the table
+    return strng.split('\n').map( el => el.split('').reverse().join('')).join('\n')
+}
+function horMirror(strng) {
+    //I should basically reverse the table of substrings seperated by \n
+    return strng.split('\n').reverse().join('\n')
+}
+function oper(fct, s) {
+    return fct(s)
+}
+
+//================================================================================
+// https://www.codewars.com/kata/5ff50f64c0afc50008861bf0
+// Simple kata, simple rules: your function should accept the inputs 4 and 7. If 4 is entered, the function should return 7. If 7 is entered, the function should return 4. Anything else entered as input should return 0. There's only one catch, your function cannot include if statements, switch statements, or the ternary operator (or the eval function due to the fact that you can get around the if requirement using it).
+
+// There are some very simple ways of answering this problem, but I encourage you to try and be as creative as possible.
+
+function fourSeven(n){
+    let sol = {
+        4 : 7,
+        7 : 4
+    }
+
+    return sol[n] || 0
+}
+
+// console.log(fourSeven(5))
+// console.log(fourSeven(7))
+// console.log(fourSeven(4))
+
+//==============================================================================
+// https://www.codewars.com/kata/5d5ee4c35162d9001af7d699/train/javascript
+// Given a 2D ( nested ) list ( array, vector, .. ) of size m * n, your task is to find the sum of the minimum values in each row.
+
+// For Example:
+
+// [ [ 1, 2, 3, 4, 5 ]        #  minimum value of row is 1
+// , [ 5, 6, 7, 8, 9 ]        #  minimum value of row is 5
+// , [ 20, 21, 34, 56, 100 ]  #  minimum value of row is 20
+// ]
+// So the function should return 26 because the sum of the minimums is 1 + 5 + 20 = 26.
+
+// Note: You will always be given a non-empty list containing positive values.
+
+function sumOfMinimums(arr) {
+    return arr.reduce( (acc, curr) => acc + Math.min(...curr) , 0 )
+  }
+
+//=================================================================================
+// https://www.codewars.com/kata/56e7d40129035aed6c000632
+// In the drawing below we have a part of the Pascal's triangle, horizontal lines are numbered from zero (top).
+
+// We want to calculate the sum of the squares of the binomial coefficients on a given horizontal line with a function called easyline (or easyLine or easy-line).
+
+// Can you write a program which calculate easyline(n) where n is the horizontal line number?
+
+// The function will take n (with: n>= 0) as parameter and will return the sum of the squares of the binomial coefficients on line n.
+
+// Examples:
+// easyline(0) => 1
+// easyline(1) => 2
+// easyline(4) => 70 //bcs 1² + 4² + 6² + 4² + 1² = 1 + 16 + 36 + 16 +1 = 70
+// easyline(50) => 100891344545564193334812497256
+// Ref: check img
+// http://mathworld.wolfram.com/BinomialCoefficient.html
+
+// alternative text
+
+// Note:
+// In Javascript, Coffeescript, Typescript, C++, PHP, C, R, Nim, Fortran to get around the fact that we have no big integers the function easyLine(n) will in fact return
+
+// round(log(easyline(n)))
+
+// and not the easyline(n) of the other languages.
+
+// So, in Javascript, Coffeescript, Typescript, C++, PHP, R, Nim, C, Fortran:
+
+// easyLine(0) => 0
+// easyLine(1) => 1
+// easyLine(4) => 4
+// easyLine(50) => 67
+
+function easyLine(n) {
+    for (var i = 1, sum = 1; i <= n; i++)
+      sum *= (n + i) / i;
+    return Math.round(Math.log(sum));
+}
+
+//=============================================================================
+// https://www.codewars.com/kata/54bf1c2cd5b56cc47f0007a1/train/javascript
+// Count the number of Duplicates
+// Write a function that will return the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. The input string can be assumed to contain only alphabets (both uppercase and lowercase) and numeric digits.
+
+// Example
+// "abcde" -> 0 # no characters repeats more than once
+// "aabbcde" -> 2 # 'a' and 'b'
+// "aabBcde" -> 2 # 'a' occurs twice and 'b' twice (`b` and `B`)
+// "indivisibility" -> 1 # 'i' occurs six times
+// "Indivisibilities" -> 2 # 'i' occurs seven times and 's' occurs twice
+// "aA11" -> 2 # 'a' and '1'
+// "ABBA" -> 2 # 'A' and 'B' each occur twice
+
+function duplicateCount(text){
+    let obj = {}
+    for (let i=0 ; i<text.length ; i++) {
+        if(text[i].toLowerCase() in obj) {
+            obj[text[i].toLowerCase()]++
+        }else {
+            obj[text[i].toLowerCase()]=1
+        }
+    }
+    let result = 0
+
+    for (let key in obj) {
+        if(obj[key] > 1) {
+            result++
+        }
+    }
+    console.log(obj);
+    return result
+}
+
+//console.log(duplicateCount("aabBcde"));
+// console.log(duplicateCount("indivisibility"));
+// console.log(duplicateCount('Indivisibilities'));
+
+function duplicateCountBis(text){
+    //j'ajoute le dernier element d'un element qui apparait plsrs fois
+    //je compte le nombre d'element qui remplissent cette regle
+    return text.toLowerCase().split('').filter( (el, i, arr) => arr.indexOf(el) !== i && arr.lastIndexOf(el) === i).length
+}
+
+// console.log(duplicateCountBis("aabBcde"));
+// console.log(duplicateCountBis("indivisibility"));
+// console.log(duplicateCountBis('Indivisibilities'));
+//console.log(duplicateCountBis('Indivisiiiiii'));
